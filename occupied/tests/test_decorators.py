@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TransactionTestCase
 
 from ..decorators import do_or_fail, do_or_die
 from ..exceptions import LockAlreadyAcquired
@@ -10,7 +10,7 @@ from ..models import SimpleLock
 # means that threads don't share the same database.
 
 
-class TestDecorators(TestCase):
+class TestDecorators(TransactionTestCase):
 
     def test_no_clash(self):
         """Functions with different names -- no clash"""
