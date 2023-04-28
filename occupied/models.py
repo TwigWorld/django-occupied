@@ -28,3 +28,6 @@ class SimpleLock(models.Model):
 
     def release(self):
         self.delete()
+        
+    class Meta:
+        app_label = 'occupied'
