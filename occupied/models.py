@@ -8,10 +8,7 @@ class SimpleLock(models.Model):
     A simple lock record which either exists or doesn't.
     """
 
-    key = models.CharField(
-        max_length=255,
-        primary_key=True
-    )
+    key = models.CharField(max_length=255, primary_key=True)
     acquired = models.DateTimeField(auto_now_add=True)
 
     @classmethod
@@ -21,13 +18,11 @@ class SimpleLock(models.Model):
                 return cls.objects.create(key=key)
         except IntegrityError:
             raise LockAlreadyAcquired(
-                "Lock with key '{key}' has already been acquired.".format(
-                    key=key
-                )
+                "Lock with key '{key}' has already been acquired.".format(key=key)
             )
 
     def release(self):
         self.delete()
-        
+
     class Meta:
-        app_label = 'occupied'
+        app_label = "occupied"
