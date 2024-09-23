@@ -14,6 +14,7 @@ def do_or_fail(key_or_func=None):
     def decorator(func):
         def func_wrapper(*args, **kwargs):
             return helpers.do_or_fail(key, func, *args, **kwargs)
+
         return func_wrapper
 
     if func is not None:
@@ -33,6 +34,7 @@ def do_or_die(key_or_func=None):
     def decorator(func):
         def func_wrapper(*args, **kwargs):
             return helpers.do_or_die(key, func, *args, **kwargs)
+
         return func_wrapper
 
     if func is not None:
