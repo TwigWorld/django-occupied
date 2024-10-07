@@ -1,4 +1,5 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 setup(
     name="django-occupied",
@@ -9,5 +10,14 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[],
-    extras_require={"testing": ["black",  ]},
+    extras_require={
+        "testing": [
+            "black",
+            "isort",
+            "check_pdb_hook",
+            "pre-commit",
+            "pytest",
+            "pytest-django",
+        ]
+    },
 )
