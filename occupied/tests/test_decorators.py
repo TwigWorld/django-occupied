@@ -1,9 +1,9 @@
 from django.test import TransactionTestCase
 
-from ..decorators import do_or_fail, do_or_die
+from ..decorators import do_or_die
+from ..decorators import do_or_fail
 from ..exceptions import LockAlreadyAcquired
 from ..models import SimpleLock
-
 
 # These tests rely on 'clashing' functions being run at the same time. Ideally
 # this would be done using threading, but the setup of Django test DB (Django 1.7)
@@ -24,7 +24,7 @@ class TestDecorators(TransactionTestCase):
             inner_value = test_function_2()
             return "test_function_1", inner_value
 
-        self.assertEquals(test_function_1(), ("test_function_1", "test_function_2"))
+        assert test_function_1() == ("test_function_1", "test_function_2")
 
     def test_clash_no_error(self):
         """Functions with same names -- clash (return None)"""
@@ -38,7 +38,7 @@ class TestDecorators(TransactionTestCase):
             inner_value = test_function()
             return "test_function", inner_value
 
-        self.assertEquals(test_function(), ("test_function", None))
+        assert test_function() == ("test_function", None)
 
     def test_clash_error(self):
         """Functions with same names -- clash (raise exception)"""
@@ -67,7 +67,7 @@ class TestDecorators(TransactionTestCase):
             inner_value = test_function_2()
             return "test_function_1", inner_value
 
-        self.assertEquals(test_function_1(), ("test_function_1", None))
+        assert test_function_1() == ("test_function_1", None)
 
     def test_clash_shared_name_error(self):
         """Functions with shared names -- clash (raise Exception)"""
@@ -92,7 +92,7 @@ class TestDecorators(TransactionTestCase):
             )
 
         test_function(self)
-        self.assertEquals(SimpleLock.objects.filter(key="test_function").count(), 0)
+        assert SimpleLock.objects.filter(key="test_function").count() == 0
 
     def test_exception_clears_key(self):
         @do_or_fail("failure_function")
@@ -101,4 +101,4 @@ class TestDecorators(TransactionTestCase):
 
         with self.assertRaises(AttributeError):
             test_function_1()
-        self.assertEqual(SimpleLock.objects.filter(key="failure_function").count(), 0)
+        assert SimpleLock.objects.filter(key="failure_function").count() == 0
